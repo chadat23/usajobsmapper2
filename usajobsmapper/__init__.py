@@ -20,6 +20,9 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
+    from . import search
+    app.register_blueprint(search.bp)
+
     return app
 
 
