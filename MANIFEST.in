@@ -1,0 +1,4 @@
+graft usajobsmapper/static
+graft usajobsmapper/templates
+exclude usajobsmapper/config.py
+global-exclude *.pyc

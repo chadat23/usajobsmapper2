@@ -16,15 +16,11 @@ def create_app(test_config=None):
     #     app.config.from_mapping(test_config)
 
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    # @app.route('/hello')
+    # def hello():
+    #     return 'Hello, World!'
 
     from . import search
     app.register_blueprint(search.bp)
 
     return app
-
-
-# if (-not (Test-Path env:FLASK_APP )) { $env:FLASK_APP  = 'usajobsmapper' }
-# if (-not (Test-Path env:FLASK_ENV )) { $env:FLASK_ENV  = 'development' }
