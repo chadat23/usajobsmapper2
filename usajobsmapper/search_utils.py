@@ -92,8 +92,6 @@ def get_flask_request_args(args):
     else:
         payload['PositionScheduleTypeCode'] = ''
     payload['RelocationIndicator'] = 'True' if args.get('RelocationIndicator') else ''
-    # if vals := args.get('DatePosted'):
-    #     payload['DatePosted'] = vals
     if vals := args.get('JobGradeCode'):
         payload['JobGradeCode'] = vals.replace(' ', ';')
     if vals := args.get('SortField'):
@@ -144,8 +142,8 @@ def fix_text_for_display(payload):
 
 
 def make_url(base_url, payload):
-    payload = '&'.join([f'{k}={v}' for k, v in payload.items()])
-
+    payload = '&'.join([f'{k}={v}' for k, v in payload.items() if v != ''])
+    
     return base_url + payload
 
 
