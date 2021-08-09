@@ -5,54 +5,6 @@ from flask import current_app
 import folium
 from geopy.geocoders import Nominatim  # https://www.geonames.org/ account needed
 
-# from config import user_agent
-
-d = {'PositionID': '5A-AFPC-11066755-207281-BAF',
-     'PositionTitle': 'FIREFIGHTER',
-     'PositionURI': 'https://www.usajobs.gov:443/GetJob/ViewDetails/595827800',
-     'ApplyURI': ['https://www.usajobs.gov:443/GetJob/ViewDetails/595827800?PostingChannelID='],
-     'PositionLocationDisplay': 'Goodfellow AFB, Texas',
-     'PositionLocation': [{'LocationName': 'Goodfellow AFB, Texas',
-                           'CountryCode': 'United States',
-                           'CountrySubDivisionCode': 'Texas',
-                           'CityName': 'Goodfellow AFB, Texas',
-                           'Longitude': -100.40798, 'Latitude': 31.342018}],
-     'OrganizationName': 'Air Education and Training Command',
-     'DepartmentName': 'Department of the Air Force',
-     'JobCategory': [{'Name': 'Fire Protection and Prevention',
-                      'Code': '0081'}],
-     'JobGrade': [{'Code': 'GS'}],
-     'PositionSchedule': [{'Name': 'Full-time',
-                           'Code': '1'}],
-     'PositionOfferingType': [{'Name': 'Permanent',
-                               'Code': '15317'}],
-     'QualificationSummary': "QUALIFICATIONS: In order to qualify, you must meet the specialized experience requirements described in the Office of Personnel Management (OPM) Qualification Standards for General Schedule Positions, to include the Individual Occupational Requirements (IOR) for the GS-0081, Fire Protection and Prevention Series. SPECIALIZED EXPERIENCE FOR GS-0081-06: Applicants must have at least one (1) year of specialized experience at the next lower grade GS-05, or equivalent in other pay systems. Examples of specialized experience includes airfield and structural, driving and operating firefighting vehicles, crash-rescue operations and reducing/eliminating potential fire hazards. NOTE: You must submit a copy of your resume. FEDERAL TIME-IN-GRADE (TIG) REQUIREMENT FOR GENERAL SCHEDULE (GS) POSITIONS: Merit promotion applicants must meet applicable time-in-&shy;grade requirements to be considered eligible. One year at the GS-05 level is required to meet the time-in-grade requirements for the GS-06 level. TIG applies if you are in a current GS position or held a GS position within the previous 52 weeks. KNOWLEDGE, SKILLS AND ABILITIES (KSAs): Your qualifications will be evaluated on the basis of your level of knowledge, skills, abilities and/or competencies in the following areas: Knowledge to drive and operate firefighting vehicles of significant complexity; of the principles of hydraulics as they pertain to water flow, water pressure, water levels, line (friction) losses, etc; and of basic and specialized firefighting equipment (fire alarm system operation, fire extinguishing equipment operation, etc.), techniques, and procedures. Knowledge of basic building design, construction, and occupancy. Knowledge to apply emergency first aid techniques; and of safety requirements as outlined in applicable safety standards, regulations, and/or technical orders. Skill in operating communications equipment; and in detecting and recognizing fire hazards (potential and immediate). Ability to maintain good working relations; to communicate orally and in writing; and to lift and carry heavy loads. Ability to drive and operate firefighting vehicles of significant complexity; and to apply emergency first aid techniques. MAXIMUM ENTRY AGE: Title 5 U.S.C. 3307 authorizes the head of any agency to establish a maximum entry age for the original appointment of individuals to the position of primary and rigorous firefighter. For initial appointments, applicants cannot have reached their 37th birthday by date of appointment. Individuals who are past the maximum entry age limit (37 years) and have prior Federal civilian firefighter experience covered by title 5 U.S.C. section 8336(c), need to upload their first Appointment SF50's into a GS-0081 position to verify if age waiver is still required or if that time can be subtracted from your current age and qualify for reentry without the age waiver. Effective 1 Jun 00, all DoD firefighters and contract fire and emergency service personnel must be certified at the next higher level before being eligible for promotion to that level. Applicants must list their current firefighter related licenses and certificates on their resumes. Please attach copies of certifications when you submit the resume to verify qualification requirements for the position. Certification requirements for this position are: Firefighter II (includes Firefighter I), Hazmat Operations (includes Hazmat Awareness), Apparatus Driver Operator- Pumper. IMPORTANT: If you have received a Student ID# for the DoD Fire and Emergency Services Certification Program website (https://go.usa.gov/xdsTR) please provide a copy of your most recent certification transcript. Note: If you do not know your Student ID, you may contact the AFCEC Reachback center at afcec.rbc@us.af.mil. If you do not have a Student ID and/or cannot access the Certificate Program site, you must upload a copy of your individual certifications or transcript at the time of your application or you will be removed from consideration. Special Retirement Provisions Authority: FERS Position covered as rigorous under the FERS special retirement provisions for Federal firefighters [5 U.S.C. 8401(14), 5 U.S.C. 8412(d), and 5 CFR 842.802]. OR CSRS Position covered as rigorous/secondary under the CSRS special retirement provisions for Federal firefighters [5 U.S.C. 8331(21), 5 U.S.C. 8336(c), and 5 CFR 831.902]. PART-TIME OR UNPAID EXPERIENCE: Credit will be given for appropriate unpaid and or part-time work. You must clearly identify the duties and responsibilities in each position held and the total number of hours per week. VOLUNTEER WORK EXPERIENCE: Refers to paid and unpaid experience, including volunteer work done through National Service Programs (i.e., Peace Corps, AmeriCorps) and other organizations (e.g., professional; philanthropic; religious; spiritual; community; student and social). Volunteer work helps build critical competencies, knowledge and skills that can provide valuable training and experience that translates directly to paid employment. You will receive credit for all qualifying experience, including volunteer experience.",
-     'PositionRemuneration': [{'MinimumRange': '39311.0',
-                               'MaximumRange': '51103.0',
-                               'RateIntervalCode': 'Per Year'}],
-     'PositionStartDate': '2021-03-22',
-     'PositionEndDate': '2021-07-09',
-     'PublicationStartDate': '2021-03-22',
-     'ApplicationCloseDate': '2021-07-09',
-     'PositionFormattedDescription': [{'Label': 'Dynamic Teaser',
-                                       'LabelDescription': 'Hit highlighting for keyword searches.'}],
-     'UserArea': {'Details': {
-         'JobSummary': 'Click on "Learn more about this agency" button below to view Eligibilities being considered and other IMPORTANT information. The primary purpose of this position is to serve as a firefighter assigned to drive and operate firefighting\nvehicles of significant complexity engaged in structural firefighting and rescue operations and assist in reducing\nand/or eliminating potential fire hazards.',
-         'WhoMayApply': {'Name': '',
-                         'Code': ''},
-         'LowGrade': '6',
-         'HighGrade': '6',
-         'PromotionPotential': 'None',
-         'HiringPath': ['fed-transition', 'overseas', 'fed-competitive', 'fed-excepted', 'disability', 'land',
-                        'mspouse', 'peace', 'vet'],
-         'TotalOpenings': 'Few',
-         'AgencyMarketingStatement': 'The mission of the United States Air Force is to fly, fight and win...in air, space and cyberspace. To achieve that mission, the Air Force has a vision of Global Vigilance, Reach and Power. That vision orbits around three core competencies: Developing Airmen, Technology-to-Warfighting and Integrating Operations. Core competencies and distinctive capabilities are based on a shared commitment to three core values -- integrity first, service before self, and excellence in all we do. Click here to view the AF Civilian Employment Eligibility Guide: 30 Percent or More Disabled VeteransAF DCIPS InterchangeAF Internal EmployeeDIBF or MRTFBDoD Transfer (Excluding Air Force)EO 12721 Certain Former Overseas EmployeesEO 13473 Appointment of Certain Military SpousesFormer Federal Employees (Reinstatement)Interagency Career Transition Assistance PlanLand Management EmployeeMilitary Spouse PreferenceNational Service (Peace Corps and VISTA)Non-AF DCIPS InterchangeNon-Appropriated FundNon-DoD TransferOther (Interchange Agreements)People with Disabilities, Schedule AVeterans Employment Opportunities ActVeterans Recruitment Authority',
-         'TravelCode': '1',
-         'ApplyOnlineUrl': 'https://apply.usastaffing.gov/Application/Apply',
-         'DetailStatusUrl': 'https://apply.usastaffing.gov/Application/ApplicationStatus'
-     },
-         'IsRadialSearch': False}}
-
 
 @dataclass
 class Job:
