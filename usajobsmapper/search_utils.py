@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import datetime
 
-from flask import current_app
+from flask import current_app, url_for
 import folium
 from geopy.geocoders import Nominatim  # https://www.geonames.org/ account needed
 
@@ -18,6 +18,7 @@ class Job:
     # organization: str
     # job_grade: str
     lat_long: list
+    job_id: str
 
 
 def get_flask_request_args(args):
@@ -108,12 +109,12 @@ def get_jobs(contents):
 
     jobs['returned_results'] = _search_results['SearchResultCount']
     jobs['total_results'] = _search_results['SearchResultCountAll']
-    print('returned results', jobs['returned_results'])
-    print('total results', jobs['total_results'])
 
     listings = []
     for result in _search_result_items:
+        # job_id = result['MatchedObjectId'] PositionID
         _matched_object_descriptor = result['MatchedObjectDescriptor']
+        job_id = _matched_object_descriptor['PositionID'] 
 
         title = _matched_object_descriptor['PositionTitle']
         url = _matched_object_descriptor['PositionURI']
@@ -143,21 +144,19 @@ def get_jobs(contents):
             listings.append(Job(title, location, 
                             low_grade, high_grade, 
                             position_start_date, position_end_date,
-                            url, lat_long)
+                            url, lat_long, job_id)
                             )
 
     jobs['jobs'] = listings
 
     jobs['total_locations'] = len(listings)
 
-    print('number of job locations', jobs['total_locations'])
-
     return jobs
 
     # return jobs, returned_results, total_results, number_of_pages
 
 
-def make_map(jobs=[], continental_us=None, location_lat_long=None, location_name=None, radius=None):
+def make_map(jobs=[], continental_us=None, location_lat_long=None, location_name=None, radius=None, searched=None):
     #  https://coolum001.github.io/foliummaps.html
     max_lat = 49.371643
     min_lat = 25.827089
@@ -188,7 +187,9 @@ def make_map(jobs=[], continental_us=None, location_lat_long=None, location_name
                         <br>
                         {job.low_grade}{'' if job.low_grade == job.high_grade else f' - {job.high_grade}'}
                     '''
-        popup = f'<a href="{job.url}" target="_blank">{job.url}</a>'
+        popup = f'''<a href="{job.url}" target="_blank">{job.url}</a>
+                    <br>
+                    <a href="{url_for('locations.locations', job_id=job.job_id)}?{searched}" target="_blank">See All Locations</a>'''
         folium.Marker(job.lat_long, popup=popup, tooltip=tool_tip).add_to(folium_map)
 
     if location_lat_long:
@@ -202,10 +203,7 @@ def make_map(jobs=[], continental_us=None, location_lat_long=None, location_name
                       fill=False,
                       ).add_to(folium_map)
 
-    # folium.raster_layers.TileLayer(tiles='OpenStreetMap', name='Open Street Map').add_to(folium_map)
-    # folium.raster_layers.TileLayer(tiles='stamentoner', name='Black/White Map').add_to(folium_map)
     folium.raster_layers.TileLayer(tiles='stamenterrain', name='Stamen Terrain').add_to(folium_map)
-    # folium.raster_layers.TileLayer(tiles='CartoDB dark_matter', name='CartoDB dark_matter').add_to(folium_map)
     folium.LayerControl().add_to(folium_map)
 
     return folium_map
@@ -231,3 +229,23 @@ def set_page(payload, page, number_of_pages):
         return number_of_pages
 
     return payload['Page']
+
+
+def set_buttons(url, number_of_pages):
+    print(url)
+    start = url.index('Page=') + 5
+    end = url.index('&', start)
+
+    page = int(url[start: end])
+
+    begining = url[:start]
+    ending = url[end:]
+
+    previous = page - 1 if page > 1 else 1
+    next = page + 1 if page < number_of_pages else number_of_pages
+
+    return (f'{begining}1{ending}',
+            f'{begining}{previous}{ending}',
+            f'{begining}{next}{ending}',
+            f'{begining}{number_of_pages}{ending}',)
+

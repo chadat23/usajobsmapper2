@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>USAJOBSmapper</title>
+{% endblock %}
+
+{% block body %}
+    <nav class="navbar">
+        <div class="container-xl">
+            <div>
+                <a href="/" class="h1 mapper">USAJOBSmapper</a>
+                <!-- <h1 class="mapper">USAJOBSmapper</h1> -->
+            </div>
+            <div class="dropdown mt-3">
+                <button class="btn dropdown-toggle" type="button" id="notes" data-bs-toggle="dropdown">
+                    Notes
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notes">
+                    <li class="dropdown-item">Adding more search criteria (as apposed to adding more responses to a
+                        specific criteria) will generally reduce the number of returned
+                        jobs.
+                    </li>
+                    <li class="dropdown-item">Hovering over and/or clicking on map markers will show additional
+                        information.
+                    </li>
+                    <li class="dropdown-item">
+                        Positions shown outside of the Radius circle are typically additional locations for jobs
+                        that have multiple locations, some being within the circle.
+                    </li>
+                    <li class="dropdown-item">This site is not affiliated with
+                        <a href="https://www.usajobs.gov/">USAJOBS</a>,
+                        this site maps and presents results retrieved from USAJOBS searches.
+                    </li>
+                    <li class="dropdown-item">Do not assume that this site is returning all results or that it's
+                        returning the same results that would be gotten from the same search on USAJOBS.gov.
+                    </li>
+                    <li class="dropdown-item"><a href="#map">stuff</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-xl my-5">
+        <div class="row map" id="map">
+            {{ content.map|safe }}
+        </div>
+    </div>
+
+    {% if content.scrol_to_anchor %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.location.hash = '#{{ content.scrol_to_anchor }}';
+        });
+    </script>
+    {% endif %}
+{% endblock %}

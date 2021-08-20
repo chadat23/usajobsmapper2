@@ -20,9 +20,21 @@ def test_job_dataclass():
     assert job.lat_long == 'lat_long'
 
 
-def test_get_flask_rewuqest_args():
-    from usajobsmapper.search_utils import get_flask_request_args
+def test_get_flask_request_args(app):
+    import flask
 
-    args = {'Keyword': 'one two'}
-    actual = get_flask_request_args(args)
-    assert actual == 'one%20two'
+    from usajobsmapper.search_utils import get_flask_request_args    
+
+    with app.test_request_context('/?Keyword=one%20two'):
+        actual = get_flask_request_args(flask.request.args)
+        expected = ({'Fields': 'Min', 
+                    'HiringPath': '', 
+                    'Keyword': 'one%20two', 
+                    'Organization': '', 
+                    'PositionScheduleTypeCode': '', 
+                    'RelocationIndicator': '', 
+                    'SortField': 'default', 
+                    'Fields': 'Min', 
+                    'HiringPath': ''},
+                    False, True, None, 1)
+        assert actual == expected

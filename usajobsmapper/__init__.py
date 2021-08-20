@@ -21,5 +21,7 @@ def create_app(test_config=None):
 
     from . import search
     app.register_blueprint(search.bp)
+    from . import locations
+    app.register_blueprint(locations.bp)
 
     return app

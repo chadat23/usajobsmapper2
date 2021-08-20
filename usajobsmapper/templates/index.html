@@ -365,11 +365,11 @@
                 {{ content.map|safe }}
                 <div class="button-group">
                     Page:
-                    <button class="btn btn-sm btn-nav" name="nav-button" value="first"><<</button>
-                    <button class="btn btn-sm btn-nav" name="nav-button" value="previous"><</button>
+                    <a href="{{ content.first }}" class="btn btn-sm btn-nav"><<</a>
+                    <a href="{{ content.previous }}" class="btn btn-sm btn-nav"><</a>
                     {{ content.Page }}
-                    <button class="btn btn-sm btn-nav" name="nav-button" value="next">></button>
-                    <button class="btn btn-sm btn-nav" name="nav-button" value="last">>></button>
+                    <a href="{{ content.next }}" class="btn btn-sm btn-nav">></a>
+                    <a href="{{ content.last }}" class="btn btn-sm btn-nav">>></a>
                     of: {{ content.number_of_pages }}
                 </div>
             </div>

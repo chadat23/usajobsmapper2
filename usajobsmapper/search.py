@@ -12,7 +12,6 @@ from . import search_utils as su
 bp = Blueprint('search', __name__, url_prefix='/')
 
 
-
 HOST = 'data.usajobs.gov'
 BASE_URL = 'https://data.usajobs.gov/api/search?'
 
@@ -22,11 +21,9 @@ def search():
 
     payload, continental_us, searched, page, number_of_pages = su.get_flask_request_args(flask.request.args)
 
-    print('page', page)
-
     if searched:
-        url = su.make_url(BASE_URL, payload)
         payload['Page'] = su.set_page(payload, page, number_of_pages)
+        url = su.make_url(BASE_URL, payload)
         request = requests.request('GET',
                                    url,
                                    headers={'Host': HOST,
@@ -42,8 +39,11 @@ def search():
         payload = su.fix_text_for_display(payload)
 
         folium_map = su.make_map(jobs['jobs'], continental_us, location_lat_long,
-                                        payload.get('LocationName'), payload.get('Radius'))
+                                 payload.get('LocationName'), payload.get('Radius'),
+                                 flask.request.full_path[2:])
 
+        payload['first'], payload['previous'], payload['next'], payload['last'] = su.set_buttons(flask.request.full_path, int(jobs['number_of_pages']))
+        
         payload['map'] = folium_map._repr_html_()
         payload['returned_results'] = jobs['returned_results']
         payload['total_results'] = jobs['total_results']
